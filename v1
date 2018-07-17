@@ -1,0 +1,95 @@
+public class MidpointKarel extends SuperKarel
+{
+    /*
+     * messy will cleanup if I have time
+     */
+    
+    // jesus christ I'm stupid, why'd I make a whole row of balls when
+    // I could just mark the endpoints?
+    public void run()
+    {
+        if (frontIsClear())
+        {
+            setup();
+            while (ballsPresent())
+            {
+                removeEnds();
+            }
+            putBall();
+            turnAround();
+        }
+        else
+        {
+            putBall();
+        }
+    }
+    
+    /*
+     * Creates a row of balls with the ends cut off.
+     * Preconditions: Karel is in default position
+     * Postconditions: A row of balls of length (avenues - 2) is created,
+     * centered, with Karel at the left end facing east.
+     */
+    private void setup()
+    {
+        move();
+        while (frontIsClear())
+        {
+            putBall();
+            move();
+        }
+        
+        turnAround();
+        move();
+    }
+    
+    /*
+     * Returns Karel to the empty spot to the left of the leftmost ball.
+     * Preconditions: Karel on the rightmost ball, facing west
+     * Postconditions: Karel returns to the empty spot to the left of 
+     * the leftmost ball, facing east.
+     */
+    private void returnToRowEnd()
+    {
+        while(ballsPresent())
+        {
+            move();
+        }
+        turnAround();
+        move();
+    }
+    
+    /*
+     * Removes the end of a row of balls.
+     * Preconditions: Karel is facing east and is on the leftmost ball
+     * Postconditions: A row of balls of length (initial row length - 2) is 
+     * created, with Karel ending on the empty spot of the leftmost ball, facing
+     * east.
+     */
+    private void removeEnds()
+    {
+        safeTakeBall();
+        move();
+        while (ballsPresent())
+        {
+            move();
+        }
+        
+        // landed on empty spot, so we need to turn around and take the other
+        // ball before returning
+        turnAround();
+        move();
+        safeTakeBall();
+        move();
+        returnToRowEnd();
+    }
+    
+    // self explanatory
+    private void safeTakeBall()
+    {
+        if (ballsPresent())
+        {
+            takeBall();
+        }
+    }
+}
